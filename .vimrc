@@ -1,10 +1,11 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 通用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype on              " 侦测文件类型
 syntax enable            " 开启语法高亮功能
 syntax on                " 自动语法高亮
 set showcmd      " 使输入的命令显示出来
+set nobackup
 
 "样式
 set title
@@ -12,6 +13,7 @@ set encoding=utf-8       " 设置字符集
 set t_Co=256             " 开启256色支持
 set number               " 开启行号显示
 set cursorline           " 高亮显示当前行
+set laststatus=2
 colorscheme molokai
 
 "区域分割
@@ -32,7 +34,6 @@ set scrolloff=3
 set clipboard+=unnamed   " 共享剪切板
 set backspace=2          " 增强delete键的作用
 set noexpandtab    " 不用空格代替制表符
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PEP8风格(python)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -101,45 +102,42 @@ func! CompileRunGcc()
   endif
 endfunc
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 配置Vundle和Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible              " required
-filetype off                  " required
+set nocompatible " required
+filetype off " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin() 
+call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 Plugin 'gmarik/Vundle.vim'
-Plugin 'Lokaltog/powerline'      "Powerline状态栏
-Plugin 'Valloric/YouCompleteMe'
-
-"文件系统
-Plugin 'kien/ctrlp.vim'    " ctrl+p 查找文件
-Plugin 'scrooloose/nerdtree'   " 树状文件系统
+Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'kien/ctrlp.vim'          " ctrl+p 查找文件
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'Valloric/YouCompleteMe'
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end() " required
+filetype plugin indent on " required
 
-
-let g:ycm_server_python_interpreter='/usr/local/bin/python3.7'
-let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
-
-"自动补全配置
-set completeopt=menuone,longest,preview
+"YouCompleteMe的配置
+set cot=longest,preview,menu
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
-
-let g:ycm_min_num_of_chars_for_completion=1     " 从第1个键入字符就开始
-let g:ycm_min_num_identifier_candidate_chars = 4   
-let g:ycm_seed_identifiers_with_syntax=1      " 语法关键字补全
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前
+let g:ycm_server_python_interpreter='/usr/local/bin/python3.7'
+let g:ycm_filetype_whitelist = { 'python': 1,'java':1 }   "设置youCompleteMe白名单,通过:set ft? 来取文件类型
+let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+let g:ycm_min_num_of_chars_for_completion=2     " 从第2个键入字符就开始
+let g:ycm_min_num_identifier_candidate_chars = 4  " 补全框中单词最小字符数
+let g:ycm_seed_identifiers_with_syntax=1      " 将这个关键子送到语法数据库
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_cache_omnifunc=0 " 禁止缓存匹配项,每次都重新生成匹配
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 配置python操作
@@ -150,12 +148,8 @@ func SetPythonTitle()
   call setline(1,"#!/usr/bin/env python")
   call append( line("."),"#-*- coding: utf-8 -*-" )
   call append(line(".")+1," ")
-  call append(line(".")+2, "\# File Name: ".expand("%")) 
-  call append(line(".")+3, "\# Author: 刘劲松") 
-  call append(line(".")+4, "\# mail: YourEmail") 
-  call append(line(".")+5, "\# Created Time: ".strftime("%Y-%m-%d",localtime()))    
+  call append(line(".")+2, "\# File Name: ".expand("%"))
+  call append(line(".")+3, "\# Author: 刘劲松")
+  call append(line(".")+4, "\# mail: YourEmail")
+  call append(line(".")+5, "\# Created Time: ".strftime("%Y-%m-%d",localtime()))
 endfunc
-
-
-
-
